@@ -1,23 +1,17 @@
-import { $ } from '@wdio/globals'
+import { $ } from '@wdio/globals';
 
 class ProfilePage {
-
     profileName(name) {
-        const element = $(`//android.widget.TextView[@text="${name}"]`)
-        element.waitForExist({
-            timeout: 5000,
-            timeoutMsg: `O nome ${name} não apareceu na tela`
-        })
-        return element
+        return $(`//android.widget.TextView[@text="${name}"]`);
     }
 
-    goToSignup() {
-        const signupButton = $('~Sign Up') // ou outro seletor do botão de cadastro
-        signupButton.waitForExist({ timeout: 5000 })
-        signupButton.click()
+    async isProfileNameVisible(name) {
+        const element = this.profileName(name);
+        await element.waitForDisplayed({ timeout: 10000 });
+        return element.isDisplayed();
     }
-
 }
 
-export default new ProfilePage()
+export default new ProfilePage();
+
 

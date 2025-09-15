@@ -1,21 +1,29 @@
-import { expect, driver } from '@wdio/globals'
-import homePage from '../pageobjects/home.page.js'
-import loginPage from '../pageobjects/login.page.js'
-import profilePage from '../pageobjects/profile.page.js'
+import { expect } from '@wdio/globals';
+import homePage from '../pageobjects/home.page.js';
+import loginPage from '../pageobjects/login.page.js';
+import profilePage from '../pageobjects/profile.page.js';
 
+describe('Fluxo de Login - EBAC Shop', () => {
 
-describe('My Login application', () => {
-    it('should login with valid credentials', async () => {
-        await homePage.openMenu(`profile`)
-        await loginPage.login('cliente@ebac.art.br', 'GD*peToHNJ1#c$sgk08EaYJQ')
-        await homePage.openMenu(`profile`)
-        expect ((await profilePage.profileName('EBAC Cliente')).isDisplayed()).toBeTruthy()
+    beforeEach(async () => {
         
-    })
-     describe('Teste Cadastro', () => {
-        it('Deve fazer o cadastro de usuário com sucesso', () => {
-            
-        });
-     });
-})
+        await driver.terminateApp('br.com.lojaebac');
+        await driver.activateApp('br.com.lojaebac');
+    });
+
+    it('Deve logar com usuário válido', async () => {
+        
+        await homePage.openMenu('profile');
+
+        
+        await loginPage.login('cliente@ebac.art.br', 'GD*peToHNJ1#c$sgk08EaYJQ');
+
+        
+        await homePage.openMenu('profile');
+
+       
+        const isProfileVisible = await profilePage.isProfileNameVisible('EBAC Cliente');
+        expect(isProfileVisible).toBe(true);
+    });
+});
 

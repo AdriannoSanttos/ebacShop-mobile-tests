@@ -1,11 +1,14 @@
-import { $ } from '@wdio/globals'
+import { $ } from '@wdio/globals';
 
 class HomePage {
     
-   async openMenu(menu){
-    await $(`id:tab-${menu}`).click()
-   }
-    
+    async openMenu(menu) {
+        const tab = $(`id:tab-${menu}`);
+        await tab.waitForDisplayed({ timeout: 10000 });
+        await tab.click();
+    }
 }
 
 export default new HomePage();
+
+

@@ -9,6 +9,7 @@
     "@wdio/mocha-framework": "^9.19.2",
     "@wdio/spec-reporter": "^9.19.2",
     "appium-uiautomator2-driver": "^5.0.0",
+    "chai": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },

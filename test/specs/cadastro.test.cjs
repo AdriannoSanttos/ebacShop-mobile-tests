@@ -1,46 +1,42 @@
-class CadastroPage {
-    // Seletores
-    get btnSignUp() {
-        return $('~Sign Up'); // botão de cadastro na tela inicial
+import { expect } from '@wdio/globals';
+import homePage from '../pageobjects/home.page.js';
+import loginPage from '../pageobjects/login.page.js';
+import cadastroPage from '../pageobjects/cadastro.page.js';
+
+describe('Cadastro de usuário - EBAC Shop', () => {
+
+    function generateUser() {
+        const timestamp = Date.now();
+        return {
+            firstName: 'José',
+            lastName: 'Adriano',
+            phone: '11999999999',
+            email: `teste${timestamp}@ebac.art.br`,
+            password: 'Senha123!'
+        };
     }
 
-    get inputFirstName() {
-        return $('id:firstName'); // ajuste conforme o resource-id real
-    }
+    it('Deve criar um novo usuário e acessar a tela principal', async () => {
+        const user = generateUser();
 
-    get inputLastName() {
-        return $('id:lastName');
-    }
+        
+        await homePage.openMenu('profile');
 
-    get inputPhone() {
-        return $('id:phone');
-    }
+       
+        await loginPage.goToSignUp();
 
-    get inputEmail() {
-        return $('id:email');
-    }
+        
+        await cadastroPage.fillSignupForm(user);
 
-    get inputPassword() {
-        return $('id:password');
-    }
+       
+        const createButton = await $('id:create');  
+        await createButton.scrollIntoView();       
+        await createButton.waitForDisplayed({ timeout: 10000 });
+        await createButton.click();
 
-    get btnSubmit() {
-        return $('~Register'); // botão de enviar cadastro
-    }
-
-    // Método para preencher o formulário
-    async fillForm({ firstName, lastName, phone, email, password }) {
-        await this.inputFirstName.setValue(firstName);
-        await this.inputLastName.setValue(lastName);
-        await this.inputPhone.setValue(phone);
-        await this.inputEmail.setValue(email);
-        await this.inputPassword.setValue(password);
-    }
-
-    // Método para submeter
-    async submit() {
-        await this.btnSubmit.click();
-    }
-}
-
-export default new CadastroPage();
+        
+        const mainTitle = await $('android=new UiSelector().text("EBAC Store")');
+        await mainTitle.waitForDisplayed({ timeout: 10000 });
+        expect(await mainTitle.isDisplayed()).toBe(true);
+    });
+});
